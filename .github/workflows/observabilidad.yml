@@ -1,0 +1,65 @@
+name: Observabilidad SRE y AIOps - laboratorio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      escenario:
+        description: Escenario sintético sin conexión con servicios externos
+        required: true
+        type: choice
+        options:
+          - normal
+          - degradado
+        default: normal
+
+permissions:
+  contents: read
+
+jobs:
+  laboratorio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v4
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Instalar dependencias gratuitas
+        run: python -m pip install -r requirements.txt
+      - name: Ejecutar pruebas unitarias
+        run: python -m unittest discover -s tests -v
+      - name: Generar métricas, logs y trazas simuladas
+        env:
+          ESCENARIO: ${{ inputs.escenario || 'normal' }}
+        run: python -m app.generar --escenario "$ESCENARIO"
+      - name: Analizar SLI, SLO y anomalías con ML
+        env:
+          ESCENARIO: ${{ inputs.escenario || 'normal' }}
+        run: |
+          if [ "$ESCENARIO" = "normal" ]; then
+            python -m app.analizar --exigir-slo
+          else
+            python -m app.analizar
+          fi
+      - name: Publicar resumen en la ejecución
+        if: always()
+        run: |
+          if [ -f resultados/resumen.md ]; then
+            cat resultados/resumen.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'No se generó resumen; revisar los pasos anteriores.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Guardar evidencias descargables (3 días)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-sre-${{ github.run_number }}
+          path: |
+            datos/
+            resultados/
+          if-no-files-found: warn
+          retention-days: 3
