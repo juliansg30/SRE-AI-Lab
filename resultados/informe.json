@@ -1,0 +1,51 @@
+{
+  "muestra": 120,
+  "buenas": 60,
+  "sli": 0.5,
+  "slo": 0.99,
+  "umbral_ms": 200,
+  "p95_ms": 457,
+  "presupuesto_errores_solicitudes": 1.2,
+  "consumo_errores_solicitudes": 60,
+  "cumple_slo": false,
+  "anomalias_ml": 62,
+  "tasa_anomalias": 0.5167,
+  "ejemplos_trazas_anomalas": [
+    {
+      "trace_id": "0000000000000000000000000280dea1",
+      "latency_ms": 48,
+      "status_code": 200
+    },
+    {
+      "trace_id": "0000000000000000000000000280deb6",
+      "latency_ms": 137,
+      "status_code": 200
+    },
+    {
+      "trace_id": "0000000000000000000000000280debd",
+      "latency_ms": 437,
+      "status_code": 503
+    },
+    {
+      "trace_id": "0000000000000000000000000280debe",
+      "latency_ms": 436,
+      "status_code": 200
+    },
+    {
+      "trace_id": "0000000000000000000000000280debf",
+      "latency_ms": 430,
+      "status_code": 200
+    }
+  ],
+  "eventos_auditoria_simulados": 1,
+  "actor_evento_auditoria": "estudiante-laboratorio",
+  "auditoria_esta_autorizada": true,
+  "incidente": {
+    "abrir": true,
+    "severidad": "alta",
+    "estado": "pendiente-validacion-humana",
+    "contencion_automatica": false
+  },
+  "mttd": "No medido: detección por lote, no alerta en tiempo real",
+  "mttr": "No medido: no se ejecutó recuperación real"
+}
