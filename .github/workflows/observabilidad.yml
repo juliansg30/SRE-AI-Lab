@@ -43,7 +43,7 @@ jobs:
           if [ "$ESCENARIO" = "normal" ]; then
             python -m app.analizar --exigir-slo
           else
-            python -m app.analizar
+            python -m app.analizar --exigir-slo
           fi
       - name: Publicar resumen en la ejecución
         if: always()
